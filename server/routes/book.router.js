@@ -59,9 +59,9 @@ router.put('/:id',  (req, res) => {
 // Removes a book to show that it has been read
 // Request must include a parameter indicating what book to update - the id
 router.delete('/:id',  (req, res) => {
-  console.log('Delete route called with id of', id);
   let id = req.params.id; // id of the thing to delete
   const queryText = `DELETE FROM "books" WHERE "id" = $1`
+  // console.log('Delete route called with id of', id);
 
   pool.query(queryText, [id]).then((result) => {
     res.sendStatus(204);
