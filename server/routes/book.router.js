@@ -39,22 +39,28 @@ router.post('/',  (req, res) => {
 // Request must include a parameter indicating what book to update - the id
 // Request body must include the content to update - the status
 router.put('/:id',  (req, res) => {
-  let book = req.body; // Book with updated content
+  // console.log(`Updating book ${id} with `, book);
+  let bookStatus = req.body.status;
   let id = req.params.id; // id of the book to update
+  let queryText = `UPDATE "books"
+                  SET "status" = $1
+                  WHERE "id" = $2;`;
 
-  console.log(`Updating book ${id} with `, book);
-
-  // TODO - REPLACE BELOW WITH YOUR CODE
-  res.sendStatus(500);
-
+  pool.query(queryText, [bookStatus, id])
+  .then((result) => {
+    res.sendStatus(200);
+  }).catch((error) => {
+    console.log(error);
+    res.sendStatus(500)
+  });
 });
 
 // TODO - DELETE
 // Removes a book to show that it has been read
 // Request must include a parameter indicating what book to update - the id
 router.delete('/:id',  (req, res) => {
-  let id = req.params.id; // id of the thing to delete
   console.log('Delete route called with id of', id);
+  let id = req.params.id; // id of the thing to delete
   const queryText = `DELETE FROM "books" WHERE "id" = $1`
 
   pool.query(queryText, [id]).then((result) => {
@@ -63,10 +69,6 @@ router.delete('/:id',  (req, res) => {
     console.log(error);
     res.sendStatus(500);
   })
-
-  // TODO - REPLACE BELOW WITH YOUR CODE
-
-
 });
 
 module.exports = router;

@@ -38,6 +38,18 @@ function deleteBook() {
 
 function markAsRead() {
   console.log('clicked');
+  const id = $(this).closest('tr').data('id');
+  console.log(id);
+  $.ajax({
+    type: 'PUT',
+    url: `/books/${id}`,
+    data: {status: 'read'}
+  }).then(function(response) {
+    console.log('Response from server.', response);
+    refreshBooks();
+  }).catch(function(error) {
+    console.log('Error in PUT', error);
+  });
 }
 
 // adds a book to the database
